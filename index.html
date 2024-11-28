@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English-Hindi Translator</title>
+</head>
+<body>
+    <h1>Welcome to the English-Hindi Translator!</h1>
+    <p>Type a sentence in English, click "Translate", and see the result in Hindi.</p>
+    
+    <!-- Input field for the user -->
+    <textarea id="inputText" rows="4" cols="50"></textarea><br><br>
+    
+    <!-- Button to trigger translation -->
+    <button onclick="translateText()">Translate</button><br><br>
+    
+    <!-- Display translated text -->
+    <h3>Translated Text:</h3>
+    <p id="outputText"></p>
+
+    <script>
+        // Function to handle translation request
+        async function translateText() {
+            const inputText = document.getElementById("inputText").value;
+
+            if (inputText.trim() === "") {
+                alert("Please enter some text.");
+                return;
+            }
+
+            // Make a POST request to the backend API (you'll set up this in Flask)
+            const response = await fetch("http://127.0.0.1:5000/translate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ text: inputText }),
+            });
+
+            const data = await response.json();
+            document.getElementById("outputText").innerText = data.translated_text;
+        }
+    </script>
+</body>
+</html>
